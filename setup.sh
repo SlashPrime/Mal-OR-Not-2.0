@@ -1,5 +1,6 @@
 #!/bin/bash
 sudo apt install python3-pip
+sudo apt install bc
 sudo apt-get install jq
 sudo apt-get install speedtest-cli
 pip install python-whois

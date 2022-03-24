@@ -52,7 +52,7 @@ def makepdf(x,y,resultfromtxt):
 
     pdf.output(name)
 
-response = requests.get("https://ipqualityscore.com/api/json/url/52euadgGvFpxYkflxorqnBTwGY8mEwMi/"+inp)
+response = requests.get("https://ipqualityscore.com/api/json/url/ZZZZ/"+inp)
 domainscorecheck=json.loads(response.text)
 
 with open ("output/domain/"+inp+".domain.report", 'w') as fo:

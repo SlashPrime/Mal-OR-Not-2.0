@@ -27,5 +27,4 @@ else
 echo -e "${RED}${BOLD}[i] Your ping is: $p ms. Some options might not work well. Consider switching your network. Exiting..."; exit
 fi
 echo -e "\n"
-# read -p "Enter username:" USER
-# read -p "Enter city:" CITY
+python3 Mal-Or-Not.py

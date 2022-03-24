@@ -153,6 +153,7 @@ while True:
     elif choice==6:
             phno()
     elif choice==7:
+            print '^_^ Thank you for using Mal-OR-Not! ^_^'.center(100,'-')
             break
     else:
-            print ("Incorrect Option")
+            print ("Incorrect Option! The range is between 1-7. Pls try again.")

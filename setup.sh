@@ -24,6 +24,7 @@ chmod +x ipintel.sh
 chmod +x urlreport.sh
 chmod +x file.sh
 chmod +x startup.sh
+chmod +x speedtest.sh
 mkdir -p output/ip
 mkdir output/domain
 mkdir output/number

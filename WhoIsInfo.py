@@ -1,34 +1,11 @@
-from tkinter import *
-from tkinter import ttk
 import requests
 import json
 import whois
 from fpdf import FPDF 
 import datetime;
 
-rootentry = Tk()
-rootentry.title('Domain Intel')
-rootentry.geometry("350x200+670+300")
-bg= PhotoImage(file="matrixbg.png")
-my_canvas = Canvas(rootentry, width=200, height=100, bd=0, highlightthickness=0, bg="green")
-my_canvas.pack(fill="both", expand=True)
-
-my_canvas.create_image(0,0, image=bg, anchor="nw")
-my_canvas.create_text(180,45, text="Enter Domain name:", font=("Helvetica", 18,'bold'), fill="white")
-entry = Entry(rootentry, font=("Helvitica",12),width=13, fg="black", bd=0)
-entry_window = my_canvas.create_window(115,80,anchor='nw', window=entry)
 typeid='domain'
-def store():
-    global inp
-    inp=entry.get()
-    print(typeid+":"+inp)
-    rootentry.destroy()
-
-buttonentry=Button(rootentry, text="Done",font=("times",12),width=5,padx=15, pady=7, fg='white', bg='black', bd=0, command=store)
-buttonentry_window = my_canvas.create_window(145,130, anchor='nw', window=buttonentry)
-
-rootentry.mainloop()
-
+inp= input("Enter Domain: ")
 w = whois.whois(inp)
 
 with open("usernamelocation.txt","r") as n:
@@ -75,93 +52,46 @@ def makepdf(x,y,resultfromtxt):
 
     pdf.output(name)
 
-rootentry = Tk()
-rootentry.title('Domain info')
-rootentry.geometry("410x600+670+300")
-
-main_frame=Frame(rootentry)
-main_frame.pack(fill=BOTH, expand=1)
-
-my_canvas=Canvas(main_frame, bg='black', bd=0, highlightthickness=0, relief='ridge')
-my_canvas.pack(side=LEFT, fill=BOTH, expand=1)
-
-my_scrollbar=ttk.Scrollbar(main_frame, orient=VERTICAL, command=my_canvas.yview)
-my_scrollbar.pack(side=RIGHT, fill=Y)
-
-my_canvas.configure(yscrollcommand=my_scrollbar.set)
-my_canvas.bind('<Configure>', lambda e:my_canvas.configure(scrollregion=my_canvas.bbox("all")))
-
-second_frame=Frame(my_canvas, bg='black')
-
-my_canvas.create_window((0,0), window=second_frame, anchor='nw')
-
-row=0
-col=0
-for i in w.keys():
-    if i != 'status':
-        col=0
-        text_key= Label(second_frame, text=i.capitalize().replace("_", " ")+":", font='"Helvetica" 12', anchor="w", justify=LEFT, bg='black', fg='white').grid(row=row, column=col)
-        col+=1
-        if (w[i]!=None):
-            if (type(w[i]) is list):
-                dlen=len(w[i])
-                for j in range(0,dlen):
-                    text_value= Label(second_frame, text=w[i][j], font='"Helvetica" 12', bg='black', fg='white').grid(row=row, column=col)
-                    row+=1
-
-            else:
-                text_value= Label(second_frame, text=w[i], font='"Helvetica" 12', bg='black', fg='white').grid(row=row, column=col)
-                row+=1
-        else:
-            text_value= Label(second_frame, text='Not listed', font='"Helvetica" 12', bg='black', fg='white').grid(row=row, column=col)
-            row+=1
-
-
-response = requests.get("https://ipqualityscore.com/api/json/url/ZZZZ/"+inp)
+response = requests.get("https://ipqualityscore.com/api/json/url/52euadgGvFpxYkflxorqnBTwGY8mEwMi/"+inp)
 domainscorecheck=json.loads(response.text)
 
-for p in domainscorecheck.keys():
-    if p != 'domain_age':
-        col=0
-        text_key= Label(second_frame, text=p.capitalize().replace("_", " ")+":", anchor="w", justify=LEFT, font='"Helvetica" 12', bg='black', fg='white').grid(row=row, column=col)
-        col+=1
-        if (domainscorecheck[p]!=None):
-                if (type(domainscorecheck[p]) is list):
-                    checklen=len(domainscorecheck[p])
-                    for q in range(0,checklen):
-                        text_value= Label(second_frame, text=domainscorecheck[p][q], font='"Helvetica" 12', bg='black', fg='white').grid(row=row, column=col)
-                        row+=1
+with open ("output/domain/"+inp+".domain.report", 'w') as fo:
+    for k, v in w.items():
+        if k != 'status' and k != 'whois_server' and k != 'referral_url' and k != 'name_servers' and k != 'emails' and k != 'dnssec' and k != 'name' and k != 'org' and k != 'address' and k != 'city' and k != 'state' and k != 'zipcode':
+            fo.write(str(k).capitalize().replace("_", " ")+": ")
+            if (v !=None):
+                if (type(v) is list):
+                    dlen=len(v)
+                    for j in range(0,dlen):
+                        fo.write(str(v[j]) + '\n')
+                        if j != (dlen-1):
+                            fo.write('-\t')
+
                 else:
-                    text_value= Label(second_frame, text=domainscorecheck[p], font='"Helvetica" 12', bg='black', fg='white').grid(row=row, column=col)
-                    row+=1
-        else:
-            text_value= Label(second_frame, text='Not listed', font='"Helvetica" 12', bg='black', fg='white').grid(row=row, column=col)
-            row+=1
-    else:
-        col=0
-        text_key= Label(second_frame, text=p.capitalize().replace("_", " ")+":", font='"Helvetica" 12', bg='black', fg='white').grid(row=row, column=col)
-        row+=1
-        for r in domainscorecheck[p].keys():
-           col=0
-           text_key= Label(second_frame, text="-"+r.capitalize().replace("_", " ")+":", font='"Helvetica" 12', bg='black', fg='white').grid(row=row, column=col)
-           col+=1
-           text_value= Label(second_frame, text=domainscorecheck[p][r], font='"Helvetica" 12', bg='black', fg='white').grid(row=row, column=col)
-           row+=1
-
-
-rootentry.mainloop()
-
-with open("output/domain/"+inp+".domain.report", 'w') as f: 
-    for key, value in w.items():
-        if key != 'status':
-            f.write('%s:%s\n' % (key, value))
-    for key, value in domainscorecheck.items():
-        f.write('%s:%s\n' % (key, value))
-    f.write('\n')
+                    fo.write(str(v) + '\n')
+            else:
+                fo.write('Not listed \n')
+    for p,q in domainscorecheck.items():
+        if p != 'domain_age' and p != 'message' and p != 'success' and p != 'domain' and p != 'content_type' and p != 'page_size' and p != 'dns_valid' and p != 'parking' and p != 'request_id':
+            fo.write(str(p).capitalize().replace("_", " ")+": ")
+            if (domainscorecheck[p]!=None):
+                    if (type(q) is list):
+                        checklen=len(q)
+                        for r in range(0,checklen):
+                            fo.write(str(q[r]) + '\n')
+                            if r != (checklen-1):
+                                fo.write('-\t')
+                    else:
+                        fo.write(str(q) + '\n')
+            else:
+                fo.write('Not listed \n')
 
 currentdomain=open("output/domain/"+inp+".domain.report", 'r')
 readcurrent=currentdomain.read()
 makepdf(inp,typeid,readcurrent)
+print ('RESULT BEGINS HERE'.center(100,'-'))
+print (readcurrent)
+print ('RESULT ENDS HERE'.center(100,'-'))
 currentdomain.close()
 
 maindomainfile=open("output/domain/"+"domain.master.report","a")

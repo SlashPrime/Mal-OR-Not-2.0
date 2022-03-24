@@ -27,11 +27,13 @@ id=$(cat $name.file.output1 | jq | grep id | awk -F "\"" '{print $4}')
 rm $name.file.output1
 sleep 10
 function fileInfo(){
-curl -s --request GET --url "https://www.virustotal.com/api/v3/analyses/$1" --header "x-apikey: XXXX" > $2.file.output2
+curl -s --request GET --url "https://www.virustotal.com/api/v3/analyses/$1" --header "x-apikey: d2d01393e9c34f7d20d08625f1aa6409e8323a9765568dc88a38a2a330213f2f" > $2.file.output2
+cat $2.file.output2 | grep status | grep queued > /dev/null 
+if [[ $? -eq 0 ]] ; then echo "[i] Results are being evaluated. Have patience."; sleep 5;  fileInfo "$id" "$name" ; fi 
 }
 fileInfo "$id" "$name"
-cat $name.file.output2 | grep status | grep queued > /dev/null 
-if [[ $? -eq 0 ]] ; then sleep 5; echo "[i] Results are being evaluated. Have patience."; fileInfo "$id" "$name" ; fi 
+# cat $name.file.output2 | grep status | grep queued > /dev/null 
+# if [[ $? -eq 0 ]] ; then echo "[i] Results are being evaluated. Have patience."; sleep 5;  fileInfo "$id" "$name" ; fi 
 echo -e "According to VirusTotal API:\n" >> output/file/$name.file.report
 cat $name.file.output2 | grep -E "malicious|suspicious|undetected|harmless"  | grep -vE "category|result" | tr -d "\"," | sed 's/\<\([[:lower:]]\)\([[:alnum:]]*\)/\u\1\2/g' | sed 's/^ *//g' | awk 'BEGIN{ RS = "" ; FS = "\n" }{print $3,"\n",$2,"\n",$1,"\n",$4}' | sed 's/^ *//g' >>output/file/$name.file.report
 mal_list=$(cat $name.file.output2 | grep -E "malicious" -A 5 | grep engine_name | awk -F "\"" '{print $4}' )
@@ -44,4 +46,4 @@ cat output/file/$name.file.report>> output/file/file.master.report
 else 
 echo "The file appears to be safe to use! :D" >> output/url/$name.url.report
 fi
-rm $name.file.output2
+#rm $name.file.output2

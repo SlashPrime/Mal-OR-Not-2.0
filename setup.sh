@@ -22,7 +22,6 @@ sed -i "s#ZZZZ#$ipquality#" WhoIsInfo.py
 sed -i "s#NNNN#$numverify#" number.sh
 chmod +x ipintel.sh
 chmod +x urlreport.sh
-chmod +x speedtest.sh
 chmod +x file.sh
 mkdir -p output/ip
 mkdir output/domain

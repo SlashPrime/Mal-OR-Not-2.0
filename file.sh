@@ -1,7 +1,7 @@
 #!/bin/bash
 vt_file() {
     # Submit a file
-    APIKEY="d2d01393e9c34f7d20d08625f1aa6409e8323a9765568dc88a38a2a330213f2f"
+    APIKEY="XXXX"
     FILE="$1"
     local FSIZE=$(stat $FILE | grep "Size:" | awk '{print $2}')
     if [[ $FSIZE -gt 33554431 ]]; then
@@ -13,7 +13,7 @@ vt_file() {
 
 vt_bigfile() {
     # files > 32M need a special upload URL
-    APIKEY="d2d01393e9c34f7d20d08625f1aa6409e8323a9765568dc88a38a2a330213f2f"
+    APIKEY="XXXX"
     FILE="$1"
     URL=$(curl -s --request GET --url "https://www.virustotal.com/api/v3/files/upload_url" --header "x-apikey: $APIKEY" | jq -r .data)
     curl -s --request POST --url "$URL" --header "x-apikey: $APIKEY" --form "file=@$FILE" >> $name.file.output1
@@ -27,7 +27,7 @@ id=$(cat $name.file.output1 | jq | grep id | awk -F "\"" '{print $4}')
 rm $name.file.output1
 sleep 10
 function fileInfo(){
-curl -s --request GET --url "https://www.virustotal.com/api/v3/analyses/$1" --header "x-apikey: d2d01393e9c34f7d20d08625f1aa6409e8323a9765568dc88a38a2a330213f2f" > $2.file.output2
+curl -s --request GET --url "https://www.virustotal.com/api/v3/analyses/$1" --header "x-apikey: XXXX" > $2.file.output2
 }
 fileInfo "$id" "$name"
 cat $name.file.output2 | grep status | grep queued > /dev/null 

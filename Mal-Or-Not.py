@@ -139,7 +139,7 @@ def files():
     makepdf(newinp,typeid,data)
 
 while True:
-    choice = int(input("1) FILE\n2) URL\n3) IP\n4) E-MAIL\n5) Domain\n6) Phone Number\n7) Exit\nWhich entity do you wish to test?: "))
+    choice = int(input("\nWhich entity do you wish to test?\n1) FILE\n2) URL\n3) IP\n4) E-MAIL\n5) Domain\n6) Phone Number\n7) Exit\nEnter Choice: "))
     if choice==1:
             files()
     elif choice==2:

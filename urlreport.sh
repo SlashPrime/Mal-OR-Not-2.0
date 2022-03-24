@@ -9,7 +9,7 @@ curl -s --request GET --url https://www.virustotal.com/api/v3/analyses/$id --hea
 }
 getURLInfo "$1"
 outcome=$(cat result2 | grep -E "harmless|undetected" | grep -v 0 | wc -l)
-if [[ outcome -eq 0 ]] ; then echo -e "[i] API call failed, trying again. Be patient." ; getURLInfo "$1" ; fi
+if [[ $outcome -eq 0 ]] ; then echo -e "[i] API call failed, trying again. Be patient." ; getURLInfo "$1" ; fi
 echo -e "\nAccording to VirusTotal API:"  >> output/url/$name.url.report
 cat result2 | jq | grep -E "harmless|malicious|suspicious|undetected" | grep -iEv "Result|category" | tr -d "\"" | sed 's/\<\([[:lower:]]\)\([[:alnum:]]*\)/\u\1\2/g' >> output/url/$name.url.report
 malicious_sources=$(cat result2 | grep malicious -B 2 | grep -v malicious | grep -E "[[:alpha:]]" | grep -vE "stats|harmless" | tr -d "\":{")

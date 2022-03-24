@@ -2,10 +2,10 @@
 name=$(echo $1 | awk -F "/" '{print $3}')
 echo -e "URL: $1" > output/url/$name.url.report
 function getURLInfo(){
-curl -s --request POST --url https://www.virustotal.com/api/v3/urls --header 'x-apikey: d2d01393e9c34f7d20d08625f1aa6409e8323a9765568dc88a38a2a330213f2f' --form url=$1 > result1
+curl -s --request POST --url https://www.virustotal.com/api/v3/urls --header 'x-apikey: XXXX' --form url=$1 > result1
 id=$(cat result1 | jq | grep id | awk -F "\"" '{print $4}')
 rm result1
-curl -s --request GET --url https://www.virustotal.com/api/v3/analyses/$id --header 'x-apikey: d2d01393e9c34f7d20d08625f1aa6409e8323a9765568dc88a38a2a330213f2f' > result2
+curl -s --request GET --url https://www.virustotal.com/api/v3/analyses/$id --header 'x-apikey: XXXX' > result2
 }
 getURLInfo "$1"
 outcome=$(cat result2 | grep -E "harmless|undetected" | grep -v 0 | wc -l)

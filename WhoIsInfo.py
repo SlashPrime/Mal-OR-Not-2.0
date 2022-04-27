@@ -3,6 +3,8 @@ import json
 import whois
 from fpdf import FPDF 
 import datetime;
+from openpyxl import Workbook
+import openpyxl
 
 typeid='domain'
 inp= input("Enter Domain: ")
@@ -93,6 +95,28 @@ print ('RESULT BEGINS HERE'.center(100,'-'))
 print (readcurrent)
 print ('RESULT ENDS HERE'.center(100,'-'))
 currentdomain.close()
+
+txttoexcel = open("output/domain/"+inp+".domain.report", 'r')
+lst=[]
+cnt=0
+for i in txttoexcel:
+    if i[0] !='-':
+        x=i.split(':',1)
+        lst.append(x[1].strip())
+        cnt=cnt+1
+    else:
+        x=i.split("-",1)
+        lst[cnt-1]=lst[cnt-1]+"\n"+x[1].strip()
+
+book = openpyxl.load_workbook('masterexcel.xlsx')
+book.active = book['Domain']
+sheet=book.active
+sheet.append(lst)
+n=sheet.max_row
+sheet.row_dimensions[n].height = 25
+book.save("masterexcel.xlsx")
+
+txttoexcel.close()
 
 maindomainfile=open("output/domain/"+"domain.master.report","a")
 maindomainfile.write(readcurrent)

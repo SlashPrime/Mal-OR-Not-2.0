@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 import requests
 from fpdf import FPDF 
 import datetime;
+from openpyxl import Workbook
+import openpyxl
 
 global city, username
 username=input("Enter Username: ")
@@ -65,6 +67,24 @@ def makepdf(x,y,resultfromtxt):
 
     pdf.output(name)
 
+def masterxl(newinp, typeid, sheettype):
+    txttoexcel = open("output/"+typeid+"/"+newinp+"."+typeid+".report", 'r')
+    lst=[]
+    for i in txttoexcel:
+        x=i.split(':',1)
+        if len(x) > 1:
+            lst.append(x[1].strip())
+            # print(x[1].strip())
+    lst = list(filter(None, lst))
+    txttoexcel.close()
+
+    book = openpyxl.load_workbook('masterexcel.xlsx')
+    book.active = book[sheettype]
+    sheet=book.active
+    row1 = lst
+    sheet.append(row1)
+    book.save("masterexcel.xlsx")
+
 def IP():
     global typeid
     typeid='ip'
@@ -77,6 +97,7 @@ def IP():
     print (data)
     print ('RESULT ENDS HERE'.center(100,'-'))
     makepdf(inp,typeid,data)
+    masterxl(inp, typeid, 'IP')
 
 def Domain():
     with open("usernamelocation.txt","w") as n:
@@ -96,6 +117,7 @@ def Email():
     print ('RESULT ENDS HERE'.center(100,'-'))    
     newinp=inp.split("@")[0]
     makepdf(newinp,typeid,data)
+    masterxl(newinp, typeid, 'E-mail')
 
 def phno():
     global typeid
@@ -109,6 +131,7 @@ def phno():
     print (data)
     print ('RESULT ENDS HERE'.center(100,'-'))
     makepdf(inp,typeid,data)
+    masterxl(inp, typeid, 'Phone no.')
 
 def link():
     global typeid
@@ -123,6 +146,7 @@ def link():
     print ('RESULT ENDS HERE'.center(100,'-'))
     newinp=inp.split("/")[2]
     makepdf(newinp,typeid,data)
+    masterxl(newinp, typeid, 'URL')
 
 def files():
     global typeid
@@ -137,6 +161,7 @@ def files():
     print ('RESULT ENDS HERE'.center(100,'-'))
     newinp=inp.split("/")[-1].split(".")[0]
     makepdf(newinp,typeid,data)
+    masterxl(newinp, typeid, 'File')
 
 while True:
     choice = int(input("\nWhich entity do you wish to test?\n1) FILE\n2) URL\n3) IP\n4) E-MAIL\n5) Domain\n6) Phone Number\n7) Exit\nEnter Choice: "))

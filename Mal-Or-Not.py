@@ -85,8 +85,6 @@ def masterxl(newinp, typeid, sheettype):
     sheet.append(row1)
     book.save("masterexcel.xlsx")
 
-    subprocess.call(['libreoffice','masterexcel.xlsx'])
-
 def IP():
     global typeid
     typeid='ip'

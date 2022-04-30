@@ -70,11 +70,18 @@ def makepdf(x,y,resultfromtxt):
 def masterxl(newinp, typeid, sheettype):
     txttoexcel = open("output/"+typeid+"/"+newinp+"."+typeid+".report", 'r')
     lst=[]
+    newstr=""
+    cnt=0
     for i in txttoexcel:
         x=i.split(':',1)
         if len(x) > 1:
             lst.append(x[1].strip())
             # print(x[1].strip())
+        if (cnt>=9 and (typeid=="file" or typeid=="url")):
+            newstr=newstr+"\n"+i
+        cnt=cnt+1
+    newstr=newstr.strip()
+    lst.append(newstr)
     lst = list(filter(None, lst))
     txttoexcel.close()
 

@@ -62,6 +62,11 @@ def masterxl(newinp, typeid, sheettype):
             newstr=newstr+"\n"+i
         cnt=cnt+1
     newstr=newstr.strip()
+    if (not newstr):
+        if typeid=="file":
+            newstr=newstr+"This file is safe!"
+        elif typeid=="url":
+            newstr=newstr+"The URL is safe to use!"
     lst.append(newstr)
     lst = list(filter(None, lst))
     txttoexcel.close()

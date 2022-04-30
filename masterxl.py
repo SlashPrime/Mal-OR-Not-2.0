@@ -12,23 +12,25 @@ book.create_sheet("Phone no.")
 
 book.active = book['File']
 sheet=book.active
-filerow1 = ['File','Malicious','Suspicious','Harmless','Undetected']
+filerow1 = ['File','Malicious','Suspicious','Harmless','Undetected','Sources that say its malicious']
 sheet.append(filerow1)
 sheet.column_dimensions['A'].width = 15
 sheet.column_dimensions['B'].width = 20
 sheet.column_dimensions['C'].width = 20
 sheet.column_dimensions['D'].width = 20
 sheet.column_dimensions['E'].width = 20
+sheet.column_dimensions['F'].width = 30
 
 book.active = book['URL']
 sheet=book.active
-urlrow1 = ['URL','Harmless','Malicious','Suspicious','Undetected']
+urlrow1 = ['URL','Harmless','Malicious','Suspicious','Undetected','Sources that say its malicious']
 sheet.append(urlrow1)
 sheet.column_dimensions['A'].width = 20
 sheet.column_dimensions['B'].width = 15
 sheet.column_dimensions['C'].width = 15
 sheet.column_dimensions['D'].width = 15
 sheet.column_dimensions['E'].width = 15
+sheet.column_dimensions['F'].width = 30
 
 book.active = book['IP']
 sheet=book.active

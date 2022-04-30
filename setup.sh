@@ -37,3 +37,4 @@ mkdir reports/number
 mkdir reports/url
 mkdir reports/file
 mkdir reports/email
+python3 masterxl.py 

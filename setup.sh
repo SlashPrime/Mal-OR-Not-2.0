@@ -7,6 +7,7 @@ pip install python-whois
 pip install fpdf
 pip install futures
 pip install PySocks
+pip install openpyxl
 sudo apt-get install figlet
 chmod +x number.sh
 chmod +x email.sh
